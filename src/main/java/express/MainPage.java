@@ -11,143 +11,85 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class MainPage {
 
+    private static final String CREATE_OBJECTS_BUTTON_SELECTOR = ".ed-button_primary.ed-button_height-medium";
+    private static final String FOLDER_OPTION_SELECTOR = "//ul/li[1]/button/span[contains(text(), 'Папка')]";
+    private static final String DOCUMENT_OPTION_SELECTOR = "//div[2]/div[1]/div[1]/ul/li[2]/button/span[contains(text(), 'Документ')]";
+    private static final String OBJECTS_NAME_INPUT_SELECTOR = "#create-node-input";
+    private static final String RENAME_OBJECTS_INPUT_SELECTOR = "#rename-node-input";
+    private static final String VERIFY_ERROR_MESSAGE_FOLDER_SELECTOR = "#create-node-input-message";
+    private static final String VERIFY_ERROR_MESSAGE_RENAME_SELECTOR = "#rename-node-input-message";
+    private static final String CREATE_BUTTON_SELECTOR = ".ed-button_primary";
+    private static final String DIALOG_ACTIONS_SELECTOR = ".modal-container";
+    private static final String DOCUMENT_LOCATOR = "#app-content-vue div table tbody tr td span.v-popper--has-tooltip";
+    private static final String RENAME_BUTTON_SELECTOR = "//li/button/span[contains(text(), 'Переименовать')]";
+    private static final String GO_BACK_BUTTON_SELECTOR = ".onlyoffice-editor-header__back-button";
+
+
     public MainPage clickCreateObjectsButton() {
-        $x("//*[@id=\"app-content-vue\"]/div[2]/div/div/div/div/button")
-                .shouldBe(Condition.visible, Duration.ofSeconds(5))
-                .click();
+        $(CREATE_OBJECTS_BUTTON_SELECTOR).shouldBe(Condition.visible).click();
         return this;
     }
 
     public MainPage selectFolderOption() {
-        $x("//ul/li[1]/button/span[contains(text(), 'Папка')]")
-                .shouldBe(Condition.visible, Duration.ofSeconds(5))
-                .click();
+        $x(FOLDER_OPTION_SELECTOR).shouldBe(Condition.visible).click();
         return this;
     }
+
     public MainPage selectDocOption() {
-        $x("//div[2]/div[1]/div[1]/ul/li[2]/button/span[contains(text(), 'Документ')]")
-                .shouldBe(Condition.visible, Duration.ofSeconds(5))
-                .click();
+        $x(DOCUMENT_OPTION_SELECTOR).shouldBe(Condition.visible).click();
         return this;
     }
 
     public MainPage enterObjectsName(String objectsName) {
-        SelenideElement inputFieldObjects =  $x("//*[@id=\"create-node-input\"]");
-
-        inputFieldObjects.shouldBe(Condition.visible).click();
-        inputFieldObjects.setValue(objectsName);
-
+        $(DIALOG_ACTIONS_SELECTOR).$(OBJECTS_NAME_INPUT_SELECTOR).shouldBe(Condition.visible).setValue(objectsName);
         return this;
     }
 
-    public MainPage renameObjects(String renameFolder){
-        SelenideElement renameFieldFolder = $x("//*[@id=\"rename-node-input\"]");
-
-        renameFieldFolder.shouldBe(Condition.visible).click();
-        renameFieldFolder.setValue(renameFolder);
-
+    public MainPage renameObjects(String newName) {
+        $(DIALOG_ACTIONS_SELECTOR).$(RENAME_OBJECTS_INPUT_SELECTOR).shouldBe(Condition.visible).setValue(newName);
         return this;
     }
 
-    public MainPage clearObjectsNameField() {
-        SelenideElement clearInputField = $x("//*[@id=\"create-node-input\"]");
-        clearInputField.shouldBe(Condition.visible).clear();
-        return this;
-    }
+//    public MainPage clearObjectsNameField() {
+//        SelenideElement clearInputField = $x("//*[@id=\"create-node-input\"]");
+//        clearInputField.shouldBe(Condition.visible).clear();
+//        return this;
+//    }
     //Тут делали, надо передалть по такому же принцпу.
     public MainPage verifyErrorForInvalidFolderName(String expectedMessage) {
-        SelenideElement errorMessage = $x("//*[@id='create-node-input-message']")
-                .shouldBe(Condition.visible).shouldHave(Condition.text(expectedMessage));
+        $(DIALOG_ACTIONS_SELECTOR).$(VERIFY_ERROR_MESSAGE_FOLDER_SELECTOR).shouldBe(Condition.visible).shouldHave(Condition.text(expectedMessage));
         return this;
     }
 
     public MainPage verifyErrorForInvalidObjectsRename(String expectedMessage) {
-        SelenideElement errorRenameMessage = $x("//*[@id=\"rename-node-input-message\"]")
-                .shouldBe(Condition.visible);
-        String actualRenameMessage = errorRenameMessage.getText();
-
-        if (actualRenameMessage.equals(expectedMessage)) {
-            System.out.println("Сообщение видно");
-        } else {
-            throw new IllegalStateException("Сообщения не видно");
-        }
-
+        $(DIALOG_ACTIONS_SELECTOR).$(VERIFY_ERROR_MESSAGE_RENAME_SELECTOR).shouldBe(Condition.visible).shouldHave(Condition.text(expectedMessage));
         return this;
     }
 
     public MainPage verifySaveButtonCreateDisabled() {
-        SelenideElement saveButton = $x("//button[@type='submit' and contains(@class, 'ed-button')]");
-        // Проверить, содержит ли класс "ed-button_disabled"
-        if (saveButton.getAttribute("class").contains("ed-button_disabled")) {
-            System.out.println("Кнопка 'Создать' задизейблена.");
-        } else {
-            throw new IllegalStateException("Кнопка 'Создать' активна, хотя должна быть задизейблена.");
-        }
-        return this;
-    }
-
-    public MainPage verifySaveButtonSaveDisabled() {
-        SelenideElement saveSaveButton = $x("//button[@type='submit' and contains(@class, 'ed-button')]");
-
-        // Проверяем, содержит ли класс "ed-button_disabled"
-        if (saveSaveButton.getAttribute("class").contains("ed-button_disabled")) {
-            System.out.println("Кнопка 'Сохранить' задизейблена.");
-        } else {
-            throw new IllegalStateException("Кнопка 'Сохранить' активна, хотя должна быть задизейблена.");
-        }
-
+        // Проверяем, содержит ли кнопка класс "ed-button_disabled"
+        $(DIALOG_ACTIONS_SELECTOR).$(CREATE_BUTTON_SELECTOR).shouldHave(Condition.cssClass("ed-button_disabled"));
         return this;
     }
 
     public MainPage saveObjects() {
-        $x("//div/div/div[2]/button[2]/span[contains(text(), 'Создать')]")
-                .shouldBe(Condition.visible).click();
-        return this;
-    }
-
-    public MainPage renameSaveObjects() {
-        $x("//div/div/div[2]/button[2]/span[contains(text(), 'Сохранить')]")
-                .shouldBe(Condition.visible, Duration.ofSeconds(5)).click();
-
-        return this;
-    }
-    // Переделать нижний так же 127
-    public MainPage findAndRightClickOnFolder(String objectsName) {
-           $$x("//*[@id='app-content-vue']/div[4]/div/table/div/tbody/tr/td[2]/span[2]/a/span")
-                   .stream().filter(a->a.getText().equals(objectsName)).findFirst().get().shouldBe(Condition.visible, Duration.ofSeconds(5)).contextClick();
-        //*[@id="app-content-vue"]/div[4]/div/table/div/tbody/tr[6]/td[2]/span[2]/a/span/span
-        Configuration.timeout = 5000;
+        $(DIALOG_ACTIONS_SELECTOR).$(CREATE_BUTTON_SELECTOR).shouldBe(Condition.visible).click();
         return this;
     }
 
     public MainPage findAndRightClickOnDoc(String folderName) {
-        ElementsCollection elementsDoc = $$x("//*[@id=\"app-content-vue\"]/div[4]/div/table/div/tbody/tr/td[2]/span[2]/a/span/span");
-
-        for (SelenideElement element : elementsDoc) {
-            if (element.getText().equals(folderName)) {
-                System.out.println("Найден созданный файл: " + folderName);
-                element.shouldBe(Condition.visible, Duration.ofSeconds(5)).contextClick();
-
-                return this;
-            }
-
-        }
-        throw new IllegalStateException("Папка с именем " + folderName + " не найдена.");
+        $$(DOCUMENT_LOCATOR)
+                .stream().filter(a->a.getText().equals(folderName)).findFirst().get().shouldBe(Condition.visible).contextClick();
+        return this;
     }
 
     public MainPage clickRename() {
-                $x("//li/button/span[contains(text(), 'Переименовать')]")
-                .shouldBe(Condition.visible)
-                .click();
-
-                return this;
+        $x(RENAME_BUTTON_SELECTOR).shouldBe(Condition.visible).click();
+        return this;
     }
 
     public MainPage goBackToMainPage() {
-        SelenideElement goBack = $x("//div[5]/div[1]/div");
-        goBack.shouldBe(Condition.visible, Duration.ofSeconds(5));
-        goBack.click();
-
+        $(GO_BACK_BUTTON_SELECTOR).shouldBe(Condition.visible).click();
         return this;
     }
 

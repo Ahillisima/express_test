@@ -13,7 +13,7 @@ public class ValidationOfFoldername {
         loginPage.open()
                 .enterUsername("")
                 .enterPassword("")
-                .clickCenter()
+//                .clickCenter()
                 .clickLoginButton();
 
         // Работа с главной страницей
@@ -24,46 +24,46 @@ public class ValidationOfFoldername {
                 .enterObjectsName("/")
                 .verifyErrorForInvalidFolderName("Имя папки не должно содержать специальные символы: /")
                 .verifySaveButtonCreateDisabled()
-                .clearObjectsNameField()
+//                .clearObjectsNameField()
 
                 .enterObjectsName(" ")
                 .verifyErrorForInvalidFolderName("Имя папки не может быть пустым")
                 .verifySaveButtonCreateDisabled()
-                .clearObjectsNameField()
+//                .clearObjectsNameField()
 
                 .enterObjectsName("..")
                 .verifyErrorForInvalidFolderName("Недопустимое имя папки")
                 .verifySaveButtonCreateDisabled()
-                .clearObjectsNameField()
+//                .clearObjectsNameField()
 
                 .enterObjectsName("папка-прав")
                 .verifyErrorForInvalidFolderName("Папка с таким именем уже существует")
                 .verifySaveButtonCreateDisabled()
-                .clearObjectsNameField()
+//                .clearObjectsNameField()
 
                 //Создаётся файл с 250 символами
-                .enterObjectsName("001normWordForFolderName2134567890123463274327894389387hdhgiisudhiuhisdhuigsfbhsdbfsbfsfvbusabdfubuy23guyt1g2tg7eg178gh2uidbsuybsadyufbsadg2387g2138egbbfuysdfbosdbfasfasf78banubf78abf8wrb783rbnuiafb78wauibn78fwi3nfcuiawhf82131212331212321321321213321")
+                .enterObjectsName("005normWordForFolderName2134567890123463274327894389387hdhgiisudhiuhisdhuigsfbhsdbfsbfsfvbusabdfubuy23guyt1g2tg7eg178gh2uidbsuybsadyufbsadg2387g2138egbbfuysdfbosdbfasfasf78banubf78abf8wrb783rbnuiafb78wauibn78fwi3nfcuiawhf82131212331212321321321213321")
                 .saveObjects()
-                .findAndRightClickOnFolder(" 001normWordForFolderName2134567890123463274327894389387hdhgiisudhiuhisdhuigsfbhsdbfsbfsfvbusabdfubuy23guyt1g2tg7eg178gh2uidbsuybsadyufbsadg2387g2138egbbfuysdfbosdbfasfasf78banubf78abf8wrb783rbnuiafb78wauibn78fwi3nfcuiawhf82131212331212321321321213321 ")
+                .findAndRightClickOnDoc(" 005normWordForFolderName2134567890123463274327894389387hdhgiisudhiuhisdhuigsfbhsdbfsbfsfvbusabdfubuy23guyt1g2tg7eg178gh2uidbsuybsadyufbsadg2387g2138egbbfuysdfbosdbfasfasf78banubf78abf8wrb783rbnuiafb78wauibn78fwi3nfcuiawhf82131212331212321321321213321 ")
                 .clickRename()
-                .renameObjects("001normWordForFolderName2134567890123463274327894389387hdhgiisudhiuhisdhuigsfbhsdbfsbfsfvbusabdfubuy23guyt1g2tg7eg178gh2uidbsuybsadyufbsadg2387g2138egbbfuysdfbosdbfasfasf78banubf78abf8wrb783rbnuiafb78wauibn78fwi3nfcuiawhf82131212331212321321321213321/")
+                .renameObjects("005normWordForFolderName2134567890123463274327894389387hdhgiisudhiuhisdhuigsfbhsdbfsbfsfvbusabdfubuy23guyt1g2tg7eg178gh2uidbsuybsadyufbsadg2387g2138egbbfuysdfbosdbfasfasf78banubf78abf8wrb783rbnuiafb78wauibn78fwi3nfcuiawhf82131212331212321321321213321/")
                 .verifyErrorForInvalidObjectsRename("Имя папки не должно содержать специальные символы: /")
-                .verifySaveButtonSaveDisabled()
+                .verifySaveButtonCreateDisabled()
 
                 .renameObjects(" ")
                 .verifyErrorForInvalidObjectsRename("Имя папки не может быть пустым")
-                .verifySaveButtonSaveDisabled()
+                .verifySaveButtonCreateDisabled()
 
                 .renameObjects("..")
                 .verifyErrorForInvalidObjectsRename("Недопустимое имя папки")
-                .verifySaveButtonSaveDisabled()
+                .verifySaveButtonCreateDisabled()
 
                 .renameObjects("папка-прав")
                 .verifyErrorForInvalidObjectsRename("Папка с таким именем уже существует")
-                .verifySaveButtonSaveDisabled()
+                .verifySaveButtonCreateDisabled()
 
                 .renameObjects(" папка-прав1 ")
-                .renameSaveObjects();
+                .saveObjects();
 
         System.out.println("done");
     }

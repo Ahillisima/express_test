@@ -1,12 +1,16 @@
 package pages;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
+
+import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.*;
 
 public class LoginPage {
+
     public LoginPage open() {
-        Selenide.open("");
+        Selenide.open("https://qa-prerelease.dev.disk.ccsteam.ru/login");
         return this;
     }
 
@@ -38,4 +42,5 @@ public class LoginPage {
         executeJavaScript("document.querySelector('#body-login > main > div.login-box > form > div > button.ed-button.ed-button_primary.ed-button_block.ed-button_height-medium').click();");
         return new pages.MainPage();
     }
+
 }

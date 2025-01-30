@@ -16,7 +16,7 @@ public class TestLogin {
         loginPage.open()
                 .enterUsername("")
                 .enterPassword("")
-                .clickCenter()
+//                .clickCenter()
                 .clickLoginButton();
 
 
