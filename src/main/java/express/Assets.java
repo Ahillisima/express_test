@@ -73,5 +73,4 @@ public class Assets {
             return extension; // Теперь toString() вернет ".docx", ".xlsx", и т.д.
         }
     }
-
 }

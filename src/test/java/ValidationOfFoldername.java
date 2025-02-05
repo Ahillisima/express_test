@@ -48,7 +48,6 @@ public class ValidationOfFoldername extends BaseSeleniumTest {
                 .renameObjects(" папка-прав1 ")
                 .saveObjects();
     }
-
 }
 
 
