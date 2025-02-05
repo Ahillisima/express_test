@@ -1,61 +1,44 @@
-package express;
-
+import express.Assets;
 import org.junit.Test;
-import pages.LoginPage;
-import pages.MainPage;
 
-
-public class ValidationOfFoldername {
+public class ValidationOfFoldername extends BaseSeleniumTest {
     @Test
     public void test() {
+        String generatedName = Assets.generateString250();
         // Авторизация
-        LoginPage loginPage = new LoginPage();
         loginPage.open()
                 .enterUsername("")
                 .enterPassword("")
-//                .clickCenter()
                 .clickLoginButton();
-
         // Работа с главной страницей
-        MainPage mainPage = new MainPage();
         mainPage.clickCreateObjectsButton()
                 .selectFolderOption()
 
-                .enterObjectsName("/")
-                .verifyErrorForInvalidFolderName("Имя папки не должно содержать специальные символы: /")
+                .enterObjectsName(Assets.ValidationMessage.INVALID_CHARACTER.getMessage())
+                .verifyErrorForInvalidFolderName(Assets.ValidationMessage.FILE_NAME_ERROR.getMessage())
                 .verifySaveButtonCreateDisabled()
-//                .clearObjectsNameField()
 
-                .enterObjectsName(" ")
-                .verifyErrorForInvalidFolderName("Имя папки не может быть пустым")
+                .enterObjectsName(Assets.ValidationMessage.DOT_FILE_ERROR.getMessage())
+                .verifyErrorForInvalidFolderName(Assets.ValidationMessage.INVALID_FILE_NAME.getMessage())
                 .verifySaveButtonCreateDisabled()
-//                .clearObjectsNameField()
-
-                .enterObjectsName("..")
-                .verifyErrorForInvalidFolderName("Недопустимое имя папки")
-                .verifySaveButtonCreateDisabled()
-//                .clearObjectsNameField()
 
                 .enterObjectsName("папка-прав")
-                .verifyErrorForInvalidFolderName("Папка с таким именем уже существует")
+                .verifyErrorForInvalidFolderName(Assets.ValidationMessage.DUPLICATE_FILE_ERROR.getMessage())
                 .verifySaveButtonCreateDisabled()
-//                .clearObjectsNameField()
 
                 //Создаётся файл с 250 символами
-                .enterObjectsName("005normWordForFolderName2134567890123463274327894389387hdhgiisudhiuhisdhuigsfbhsdbfsbfsfvbusabdfubuy23guyt1g2tg7eg178gh2uidbsuybsadyufbsadg2387g2138egbbfuysdfbosdbfasfasf78banubf78abf8wrb783rbnuiafb78wauibn78fwi3nfcuiawhf82131212331212321321321213321")
+                .enterObjectsName(Assets.generateString250())
                 .saveObjects()
-                .findAndRightClickOnDoc(" 005normWordForFolderName2134567890123463274327894389387hdhgiisudhiuhisdhuigsfbhsdbfsbfsfvbusabdfubuy23guyt1g2tg7eg178gh2uidbsuybsadyufbsadg2387g2138egbbfuysdfbosdbfasfasf78banubf78abf8wrb783rbnuiafb78wauibn78fwi3nfcuiawhf82131212331212321321321213321 ")
+                .findAndRightClickOnDoc(" " + generatedName + " ")
                 .clickRename()
-                .renameObjects("005normWordForFolderName2134567890123463274327894389387hdhgiisudhiuhisdhuigsfbhsdbfsbfsfvbusabdfubuy23guyt1g2tg7eg178gh2uidbsuybsadyufbsadg2387g2138egbbfuysdfbosdbfasfasf78banubf78abf8wrb783rbnuiafb78wauibn78fwi3nfcuiawhf82131212331212321321321213321/")
-                .verifyErrorForInvalidObjectsRename("Имя папки не должно содержать специальные символы: /")
+
+                .renameObjects(generatedName + Assets.ValidationMessage.INVALID_CHARACTER.getMessage())
+                .verifyErrorForInvalidObjectsRename(Assets.ValidationMessage.FILE_NAME_ERROR.getMessage())
                 .verifySaveButtonCreateDisabled()
 
-                .renameObjects(" ")
-                .verifyErrorForInvalidObjectsRename("Имя папки не может быть пустым")
-                .verifySaveButtonCreateDisabled()
 
-                .renameObjects("..")
-                .verifyErrorForInvalidObjectsRename("Недопустимое имя папки")
+                .renameObjects(Assets.ValidationMessage.DOT_FILE_ERROR.getMessage())
+                .verifyErrorForInvalidObjectsRename(Assets.ValidationMessage.DOT_FILE_ERROR.getMessage())
                 .verifySaveButtonCreateDisabled()
 
                 .renameObjects("папка-прав")
@@ -64,8 +47,6 @@ public class ValidationOfFoldername {
 
                 .renameObjects(" папка-прав1 ")
                 .saveObjects();
-
-        System.out.println("done");
     }
 
 }

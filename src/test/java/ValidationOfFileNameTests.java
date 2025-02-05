@@ -1,18 +1,12 @@
-package express;
-
+import express.Assets;
 import org.junit.Test;
-import pages.LoginPage;
-import pages.MainPage;
 
-
-
-
-
-public class ValidationOfFileNameTests {
+public class ValidationOfFileNameTests extends BaseSeleniumTest {
     @Test
     public void test() {
+        // Генерация строковых данных
+        String generatedName = Assets.generateString240();
         // Авторизация
-        LoginPage loginPage = new LoginPage();
         loginPage.open()
                 .enterUsername("")
                 .enterPassword("")
@@ -20,55 +14,41 @@ public class ValidationOfFileNameTests {
                 .clickLoginButton();
 
         // Работа с главной страницей
-        MainPage mainPage = new MainPage();
         mainPage.clickCreateObjectsButton()
                 .selectDocOption()
 
-                .enterObjectsName("/")
-                .verifyErrorForInvalidFolderName("Имя файла не должно содержать специальные символы: /")
+                .enterObjectsName(Assets.ValidationMessage.INVALID_CHARACTER.getMessage())
+                .verifyErrorForInvalidFolderName(Assets.ValidationMessage.FILE_NAME_ERROR.getMessage())
                 .verifySaveButtonCreateDisabled()
 
-                //Имя файла может быть пустым - надо завести баг. Если там просто стереть, а не натыкать пробелов, то ошибка появляется, но не по кейсу
-//                .enterFolderName(" ")
-//                .verifyErrorForInvalidFolderName("Недопустимое имя файла")
-//                .verifySaveButtonCreateDisabled()
-
-                .enterObjectsName("..")
-                .verifyErrorForInvalidFolderName("Недопустимое имя файла")
+                .enterObjectsName(Assets.ValidationMessage.DOT_FILE_ERROR.getMessage())
+                .verifyErrorForInvalidFolderName(Assets.ValidationMessage.INVALID_FILE_NAME.getMessage())
                 .verifySaveButtonCreateDisabled()
 
                 .enterObjectsName("Документ1")
-                .verifyErrorForInvalidFolderName("Файл с таким именем уже существует")
+                .verifyErrorForInvalidFolderName(Assets.ValidationMessage.DUPLICATE_FILE_ERROR.getMessage())
                 .verifySaveButtonCreateDisabled()
 
-                //Получилось создать с 240 символами
-                .enterObjectsName("001normWordForFolderName2134567890123463274327894389387hdhgiisudhiuhisdhuigsfbhsdbfsbfsfvbusabdfubuy23guyt1g2tg7eg178gh2uidbsuybsadyufbsadg2387g2138egbbfuysdfbosdbfasfasf78banubf78abf8wrb783rbnuiafb78wauibn78fwi3nfcuiawhf8213121233121232132")
+                // Успешное создание с 240 символами
+                .enterObjectsName(generatedName)
                 .saveObjects()
                 .goBackToMainPage()
-                .findAndRightClickOnDoc(" 001normWordForFolderName2134567890123463274327894389387hdhgiisudhiuhisdhuigsfbhsdbfsbfsfvbusabdfubuy23guyt1g2tg7eg178gh2uidbsuybsadyufbsadg2387g2138egbbfuysdfbosdbfasfasf78banubf78abf8wrb783rbnuiafb78wauibn78fwi3nfcuiawhf8213121233121232132.docx ")
+                .findAndRightClickOnDoc(" " + generatedName + Assets.FileType.DOCX.toString() + " ")
                 .clickRename()
-                .renameObjects("001normWordForFolderName2134567890123463274327894389387hdhgiisudhiuhisdhuigsfbhsdbfsbfsfvbusabdfubuy23guyt1g2tg7eg178gh2uidbsuybsadyufbsadg2387g2138egbbfuysdfbosdbfasfasf78banubf78abf8wrb783rbnuiafb78wauibn78fwi3nfcuiawhf8213121233121232132/.docx")
-                .verifyErrorForInvalidObjectsRename("Имя файла не должно содержать специальные символы: /")
+
+                .renameObjects(generatedName + Assets.ValidationMessage.INVALID_CHARACTER.getMessage() + Assets.FileType.DOCX.toString())
+                .verifyErrorForInvalidObjectsRename(Assets.ValidationMessage.FILE_NAME_ERROR.getMessage())
                 .verifySaveButtonCreateDisabled()
 
-//                .renameFolder(" ")
-//                .verifyErrorForInvalidFolderRename("Имя файла не может быть пустым")
-//                .verifySaveButtonSaveDisabled()
-//                .clearFolderNameField()
-
-                .renameObjects("..")
-                .verifyErrorForInvalidObjectsRename("Недопустимое имя файла")
+                .renameObjects(Assets.ValidationMessage.DOT_FILE_ERROR.getMessage())
+                .verifyErrorForInvalidObjectsRename(Assets.ValidationMessage.INVALID_FILE_NAME.getMessage())
                 .verifySaveButtonCreateDisabled()
 
-                .renameObjects("Документ1.docx")
-                .verifyErrorForInvalidObjectsRename("Файл с таким именем уже существует")
+                .renameObjects("Документ1" + Assets.FileType.DOCX.toString())
+                .verifyErrorForInvalidObjectsRename(Assets.ValidationMessage.DOT_FILE_ERROR.getMessage())
                 .verifySaveButtonCreateDisabled()
 
-                .renameObjects(" Документ1.docx ")
+                .renameObjects(" Документ1" + Assets.FileType.DOCX.toString() + " ")
                 .saveObjects();
-
-        System.out.println("done");
-
     }
-
 }

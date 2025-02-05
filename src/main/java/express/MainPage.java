@@ -12,8 +12,8 @@ import static com.codeborne.selenide.Selenide.*;
 public class MainPage {
 
     private static final String CREATE_OBJECTS_BUTTON_SELECTOR = ".ed-button_primary.ed-button_height-medium";
-    private static final String FOLDER_OPTION_SELECTOR = "//ul/li[1]/button/span[contains(text(), 'Папка')]";
-    private static final String DOCUMENT_OPTION_SELECTOR = "//div[2]/div[1]/div[1]/ul/li[2]/button/span[contains(text(), 'Документ')]";
+    private static final String FOLDER_OPTION_SELECTOR = ".create-picker__menu-entry:nth-child(1)";
+    private static final String DOCUMENT_OPTION_SELECTOR = ".create-picker__menu-entry:nth-child(2)";
     private static final String OBJECTS_NAME_INPUT_SELECTOR = "#create-node-input";
     private static final String RENAME_OBJECTS_INPUT_SELECTOR = "#rename-node-input";
     private static final String VERIFY_ERROR_MESSAGE_FOLDER_SELECTOR = "#create-node-input-message";
@@ -21,7 +21,7 @@ public class MainPage {
     private static final String CREATE_BUTTON_SELECTOR = ".ed-button_primary";
     private static final String DIALOG_ACTIONS_SELECTOR = ".modal-container";
     private static final String DOCUMENT_LOCATOR = "#app-content-vue div table tbody tr td span.v-popper--has-tooltip";
-    private static final String RENAME_BUTTON_SELECTOR = "//li/button/span[contains(text(), 'Переименовать')]";
+    private static final String RENAME_BUTTON_SELECTOR = "button[data-cy-files-list-row-action=\"rename\"]";
     private static final String GO_BACK_BUTTON_SELECTOR = ".onlyoffice-editor-header__back-button";
 
 
@@ -31,12 +31,12 @@ public class MainPage {
     }
 
     public MainPage selectFolderOption() {
-        $x(FOLDER_OPTION_SELECTOR).shouldBe(Condition.visible).click();
+        $(FOLDER_OPTION_SELECTOR).shouldBe(Condition.visible).click();
         return this;
     }
 
     public MainPage selectDocOption() {
-        $x(DOCUMENT_OPTION_SELECTOR).shouldBe(Condition.visible).click();
+        $(DOCUMENT_OPTION_SELECTOR).shouldBe(Condition.visible).click();
         return this;
     }
 
@@ -84,7 +84,7 @@ public class MainPage {
     }
 
     public MainPage clickRename() {
-        $x(RENAME_BUTTON_SELECTOR).shouldBe(Condition.visible).click();
+        $(RENAME_BUTTON_SELECTOR).shouldBe(Condition.visible).click();
         return this;
     }
 
