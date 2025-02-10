@@ -1,23 +1,18 @@
 package pages;
 
 import com.codeborne.selenide.*;
-import org.openqa.selenium.ElementClickInterceptedException;
-import org.openqa.selenium.Keys;
-
-import java.sql.SQLOutput;
-import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.*;
 
 public class MainPage {
 
-    private static final String CREATE_OBJECTS_BUTTON_SELECTOR = ".ed-button_primary.ed-button_height-medium";
-    private static final String FOLDER_OPTION_SELECTOR = ".create-picker__menu-entry:nth-child(1)";
-    private static final String DOCUMENT_OPTION_SELECTOR = ".create-picker__menu-entry:nth-child(2)";
+    private static final String BUTTON_PLUS_SELECTOR = ".ed-button_primary.ed-button_height-medium";
+    private static final String FOLDER_SELECTOR = ".create-picker__menu-entry:nth-child(1)";
+    private static final String DOC_FILE_SELECTOR = ".create-picker__menu-entry:nth-child(2)";
     private static final String OBJECTS_NAME_INPUT_SELECTOR = "#create-node-input";
     private static final String RENAME_OBJECTS_INPUT_SELECTOR = "#rename-node-input";
-    private static final String VERIFY_ERROR_MESSAGE_FOLDER_SELECTOR = "#create-node-input-message";
-    private static final String VERIFY_ERROR_MESSAGE_RENAME_SELECTOR = "#rename-node-input-message";
+    private static final String CREATE_ERROR_MESSAGE = "#create-node-input-message";
+    private static final String RENAME_ERROR_MESSAGE = "#rename-node-input-message";
     private static final String CREATE_BUTTON_SELECTOR = ".ed-button_primary";
     private static final String DIALOG_ACTIONS_SELECTOR = ".modal-container";
     private static final String DOCUMENT_LOCATOR = "#app-content-vue div table tbody tr td span.v-popper--has-tooltip";
@@ -26,17 +21,17 @@ public class MainPage {
 
 
     public MainPage clickCreateObjectsButton() {
-        $(CREATE_OBJECTS_BUTTON_SELECTOR).shouldBe(Condition.visible).click();
+        $(BUTTON_PLUS_SELECTOR).shouldBe(Condition.visible).click();
         return this;
     }
 
     public MainPage selectFolderOption() {
-        $(FOLDER_OPTION_SELECTOR).shouldBe(Condition.visible).click();
+        $(FOLDER_SELECTOR).shouldBe(Condition.visible).click();
         return this;
     }
 
     public MainPage selectDocOption() {
-        $(DOCUMENT_OPTION_SELECTOR).shouldBe(Condition.visible).click();
+        $(DOC_FILE_SELECTOR).shouldBe(Condition.visible).click();
         return this;
     }
 
@@ -57,12 +52,12 @@ public class MainPage {
 //    }
     //Тут делали, надо передалть по такому же принцпу.
     public MainPage verifyErrorForInvalidFolderName(String expectedMessage) {
-        $(DIALOG_ACTIONS_SELECTOR).$(VERIFY_ERROR_MESSAGE_FOLDER_SELECTOR).shouldBe(Condition.visible).shouldHave(Condition.text(expectedMessage));
+        $(DIALOG_ACTIONS_SELECTOR).$(CREATE_ERROR_MESSAGE).shouldBe(Condition.visible).shouldHave(Condition.text(expectedMessage));
         return this;
     }
 
     public MainPage verifyErrorForInvalidObjectsRename(String expectedMessage) {
-        $(DIALOG_ACTIONS_SELECTOR).$(VERIFY_ERROR_MESSAGE_RENAME_SELECTOR).shouldBe(Condition.visible).shouldHave(Condition.text(expectedMessage));
+        $(DIALOG_ACTIONS_SELECTOR).$(RENAME_ERROR_MESSAGE).shouldBe(Condition.visible).shouldHave(Condition.text(expectedMessage));
         return this;
     }
 
