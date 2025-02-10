@@ -17,7 +17,7 @@ public class MainPage {
     private static final String DIALOG_ACTIONS_SELECTOR = ".modal-container";
     private static final String DOCUMENT_LOCATOR = "#app-content-vue div table tbody tr td span.v-popper--has-tooltip";
     private static final String RENAME_BUTTON_SELECTOR = "button[data-cy-files-list-row-action=\"rename\"]";
-    private static final String GO_BACK_BUTTON_SELECTOR = ".onlyoffice-editor-header__back-button";
+    private static final String GO_BACK_SELECTOR = ".onlyoffice-editor-header__back-button";
 
 
     public MainPage clickCreateObjectsButton() {
@@ -84,7 +84,7 @@ public class MainPage {
     }
 
     public MainPage goBackToMainPage() {
-        $(GO_BACK_BUTTON_SELECTOR).shouldBe(Condition.visible).click();
+        $(GO_BACK_SELECTOR).shouldBe(Condition.visible).click();
         return this;
     }
 
